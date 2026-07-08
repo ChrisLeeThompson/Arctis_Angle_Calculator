@@ -1,0 +1,26 @@
+[project]
+name = "Arctis Angle Calculator 1.2.py"
+
+[tool.pyside6-project]
+files = [
+    "./qml_resources/main.qml",
+    "arctis_angle_calculator.py",
+    "qml_resources/AngleControlsGB.qml",
+    "qml_resources/AppConfig.qml",
+    "qml_resources/RoundedButton.qml",
+    "qml_resources/SampleDiagram.qml",
+    "qml_resources/SampleDiagramGB.qml",
+    "qml_resources/SampleGraphics.qml",
+    "qml_resources/SampleReferenceGraphics.qml",
+    "qml_resources/SpinBoxDouble.qml",
+    "qml_resources/StageDiagram.qml",
+    "qml_resources/StageDiagramGB.qml",
+    "qml_resources/StageGraphics.qml",
+    "qml_resources/StageReferenceGraphics.qml",
+    "qml_resources/StyledSwitch.qml",
+    "qml_resources/diagramFunctions.js",
+    "qml_resources/millingAngleCalculations.js",
+    "qml_resources/qmldir",
+    "qml_resources/qtquickcontrols2.conf",
+    "script_assets/stage_and_grid.svg",
+]

@@ -1,0 +1,37 @@
+# ============================================================================
+# Arctis Angle Calculator 1.2 - Python requirements
+# ============================================================================
+# A QML/PySide6 desktop tool for calculating and visualizing milling angles and
+# stage tilt angles on a Thermo Scientific Arctis (FIB / SEM / GIS). It runs
+# standalone for visualization, and optionally connects to a microscope via the
+# AutoScript SDK to get and set the compustage alpha tilt.
+#
+# Python: 3.11+ recommended (required by PySide6 / Qt 6).
+#
+# ============================================================================
+
+# --- GUI framework (Qt 6 bindings) ------------------------------------------
+# Provides QtCore (Signal, Slot, QObject, QThread, QTimer), QtGui
+# (QGuiApplication, QIcon), and QtQml (QQmlApplicationEngine). The QML uses
+# unversioned imports (QtQuick, QtQuick.Controls, QtQuick.Layouts) and a
+# qtquickcontrols2.conf style config, both of which require Qt 6 / PySide6.
+PySide6>=6.5,<7
+
+# --- Microscope control SDK (OPTIONAL, NOT available on PyPI) ---------------
+# autoscript_sdb_microscope_client is Thermo Scientific's proprietary AutoScript
+# client. The app imports it lazily and only needs it when connecting to a real
+# microscope (get/set alpha tilt). The tool runs fully without it for offline
+# visualization, so it is intentionally left out of the pip-installable set.
+#
+# It is NOT pip-installable from PyPI. Install it from the AutoScript media that
+# ships with the microscope (or from the microscope support PC) - e.g. the
+# AutoScript installer / Thermo-provided wheels. This project targets AutoScript
+# version 4.13 or newer.
+#
+# Do NOT uncomment the line below expecting pip to find it - it will fail:
+# autoscript_sdb_microscope_client   # installed via Thermo AutoScript, not pip
+
+# ----------------------------------------------------------------------------
+# Standard-library modules used by the app (os, sys, logging, math, pathlib)
+# require no installation and are intentionally not listed here.
+# ----------------------------------------------------------------------------
