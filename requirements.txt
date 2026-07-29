@@ -27,9 +27,6 @@ PySide6>=6.5,<7
 # ships with the microscope (or from the microscope support PC) - e.g. the
 # AutoScript installer / Thermo-provided wheels. This project targets AutoScript
 # version 4.13 or newer.
-#
-# Do NOT uncomment the line below expecting pip to find it - it will fail:
-# autoscript_sdb_microscope_client   # installed via Thermo AutoScript, not pip
 
 # ----------------------------------------------------------------------------
 # Standard-library modules used by the app (os, sys, logging, math, pathlib)
