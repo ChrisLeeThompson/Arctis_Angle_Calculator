@@ -75,7 +75,7 @@ ApplicationWindow {
         (((availableWidth - frameAllowance) - 48) / 2) / AppConfig.stageDiagramWidth))
 
     visible: true
-    title: qsTr("Arctis Angle Calculator 1.2.1")
+    title: qsTr("Arctis Angle Calculator") + " " + AppConfig.appVersion
     color: AppConfig.backgroundColor
 
     // Toggle for the alternative milling angle calculation when alpha tilt < -128

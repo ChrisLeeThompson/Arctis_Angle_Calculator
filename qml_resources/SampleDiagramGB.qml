@@ -32,8 +32,9 @@ GroupBox {
 
     // The figure is drawn at its natural design size and scaled uniformly by
     // figureFitScale; the slot's implicit size shrinks by the same factor so the
-    // GroupBox reclaims the freed space. The Chalk Line / Erase buttons are NOT
-    // scaled - they stay full size, anchored to the bottom of the (shrunk) slot.
+    // GroupBox reclaims the freed space. The Add Chalk Line / Remove Last buttons
+    // are NOT scaled - they stay full size, anchored to the bottom of the
+    // (shrunk) slot.
     contentItem: Item {
         id: figureSlot
         implicitWidth: AppConfig.stageDiagramWidth * root.figureFitScale
@@ -68,9 +69,13 @@ GroupBox {
 
             RoundedButton {
                 id: chalkLineButton
-                text: qsTr("Chalk Line")
-                implicitWidth: 100
+                text: qsTr("Add Chalk Line")
+                implicitWidth: 120
                 radius: AppConfig.buttonRadius
+                ToolTip.text: AppConfig.addChalkLineButtonToolTip
+                ToolTip.delay: AppConfig.toolTipDelay
+                ToolTip.timeout: AppConfig.toolTipTimeout
+                ToolTip.visible: hovered
 
                 onClicked: {
                     sampleDiagram.addChalkLine()
@@ -83,10 +88,14 @@ GroupBox {
 
             RoundedButton {
                 id: eraseLineButton
-                text: qsTr("Erase")
-                implicitWidth: 80
+                text: qsTr("Remove Last")
+                implicitWidth: 110
                 radius: AppConfig.buttonRadius
                 enabled: sampleDiagram.chalkLineCount > 0
+                ToolTip.text: AppConfig.removeLastButtonToolTip
+                ToolTip.delay: AppConfig.toolTipDelay
+                ToolTip.timeout: AppConfig.toolTipTimeout
+                ToolTip.visible: hovered
 
                 onClicked: {
                     sampleDiagram.removeLastChalkLine()

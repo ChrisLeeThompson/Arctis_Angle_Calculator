@@ -106,6 +106,10 @@ GroupBox {
                 text: qsTr("Get")
                 radius: AppConfig.buttonRadius
                 enabled: false
+                ToolTip.text: AppConfig.getButtonToolTip
+                ToolTip.delay: AppConfig.toolTipDelay
+                ToolTip.timeout: AppConfig.toolTipTimeout
+                ToolTip.visible: hovered
                 onClicked: {
                     arctis_angle_calc_backend.get_current_alpha_tilt()
                 }
@@ -163,6 +167,10 @@ GroupBox {
                 text: qsTr("Go To")
                 radius: AppConfig.buttonRadius
                 enabled: false
+                ToolTip.text: AppConfig.goToButtonToolTip
+                ToolTip.delay: AppConfig.toolTipDelay
+                ToolTip.timeout: AppConfig.toolTipTimeout
+                ToolTip.visible: hovered
                 onClicked: {
                     arctis_angle_calc_backend.tilt_stage_to_alpha(alphaTiltSB.realValue)
                 }

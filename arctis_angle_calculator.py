@@ -2,16 +2,16 @@
 """
 Arctis Angle Calculator
 '
-This UI is designed to assist with the calculation and visualization of milling angles and stage tilt angles from a Thermo Scienctific Arctis microscope.
+Calculates and visualizes milling angles and stage tilt angles for a Thermo Scientific Arctis microscope.
 It allows the user to draw lines at different milling angles to explore milling procedures and GIS deposition positions.
-The UI can be used with or without connecting to a microscope with AutoScript. When connected to a microscope, the UI allows the user to get and set the alpha tilt positions of the stage.
+The UI can be used with or without connecting to a microscope with AutoScript. When connected to a microscope, the UI allows the user to get and set the stage's alpha tilt position.
 '
 The UI is compatible with AutoScript version 4.13 and above.
 '
-If you have any questions or comments, please contact me, Chris Thompson, on GitHub (ChrisLeeThompson)
+If you have any questions or comments, please contact me, Chris Thompson, on GitHub (ChrisLeeThompson).
 '
 Thank you,
-Chris Thompson (16 June, 2026)
+Chris Thompson
 '
 Copyright 2026 Christopher Thompson
 '
@@ -161,7 +161,7 @@ class ArctisAngleCalcWorker(QObject):
         """Method imports AutoScript and connects to the AutoScript server."""
         try:
             self.connect_switch_enable_signal.emit(False)           # disable switch while connecting
-            self.worker_status_label_signal.emit("Connecting...")
+            self.worker_status_label_signal.emit("Connecting…")
             logging.info("Importing AutoScript...")
             from autoscript_sdb_microscope_client.sdb_microscope_client import SdbMicroscopeClient
             logging.info("AutoScript imported")
@@ -176,7 +176,7 @@ class ArctisAngleCalcWorker(QObject):
             self.connected_to_microscope_signal.emit(True)          # signal to enable Get and Go To buttons
         except Exception as e:
             logging.error(f"Exception occurred: {e}", exc_info=True)
-            self.worker_status_label_signal.emit("Connection error")
+            self.worker_status_label_signal.emit("Connection failed.")
             self.connected_to_microscope_signal.emit(False)         # toggle switch off
             self.connect_switch_enable_signal.emit(True)
             self.is_connected = False
@@ -206,7 +206,7 @@ class ArctisAngleCalcWorker(QObject):
         # disable Get and Go To buttons and microscope connect switch while stage is moving
         self.stage_move_signal.emit(True)
         # send status signal
-        self.worker_status_label_signal.emit("Tilting stage...")
+        self.worker_status_label_signal.emit("Tilting stage…")
         # tilt stage
         position = CompustagePosition(a=alpha_tilt_radians)
         self.microscope.specimen.compustage.absolute_move(position)

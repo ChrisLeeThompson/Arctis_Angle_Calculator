@@ -3,6 +3,9 @@ import QtQuick
 
 QtObject {
 
+    // Application version (shown in the window title)
+    readonly property string appVersion: "1.2.2"
+
     // Main window color palette
     readonly property color backgroundColor: "#1e2c36"
     readonly property color accentColor: "#2ea2ec"
@@ -13,10 +16,14 @@ QtObject {
     readonly property int toolTipTimeout: 10000
 
     // Tooltip strings
-    readonly property string millingAngleToolTip: "The milling angle (degrees) calculated with the alpha tilt angle (degrees).\nMilling angle = 38.0 + alphaTilt."
-    readonly property string alphaTiltAngleToolTip: "The alpha tlit angle (degrees) calculated with the milling angle (degrees).\nAlpha tilt angle = millingAngle - 38.0."
-    readonly property string connectToMicroscopeToolTip: "Connect to the microscope AutoScript server to enable the Get and Go To buttons (if AutoScript and the server are available).\nThe Get button retrieves the current alpha tilt angle of the stage. The Go To button moves the stage to the set alpha tilt angle."
-    readonly property string bogMillingAngleToolTip: "The back-of-grid (BOG) milling angle switch toggles the milling angle calculation.\nWhen alpha tilt is < -128.0 degrees, the BOG milling angle = -180 - (38.0 + alphaTilt)."
+    readonly property string millingAngleToolTip: "Milling angle (deg.) calculated from the alpha tilt angle. Formula: 38° + alpha tilt."
+    readonly property string alphaTiltAngleToolTip: "Alpha tilt angle (deg.) calculated from the milling angle. Formula: milling angle − 38°."
+    readonly property string connectToMicroscopeToolTip: "Connect to the microscope's AutoScript server to enable the Get and Go To buttons (requires AutoScript).\n\nGet reads the current alpha tilt angle of the stage. Go To tilts the stage to the set alpha tilt angle."
+    readonly property string bogMillingAngleToolTip: "Toggles the back-of-grid (BOG) milling angle calculation.\n\nWhen enabled and the alpha tilt is below −128°, the milling angle = −180° − (38° + alpha tilt)."
+    readonly property string getButtonToolTip: "Read the current alpha tilt angle from the stage."
+    readonly property string goToButtonToolTip: "Tilt the stage to the set alpha tilt angle."
+    readonly property string addChalkLineButtonToolTip: "Add a chalk line along the FIB direction at the current alpha tilt."
+    readonly property string removeLastButtonToolTip: "Remove the most recent chalk line."
 
     // Label
     readonly property int labelWidth: 170
