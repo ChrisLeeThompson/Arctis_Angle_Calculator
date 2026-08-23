@@ -6,7 +6,7 @@ import "millingAngleCalculations.js" as Calc
 
 // Sample Graphics (rotating layer)
 //
-// Cartoon cross-section of the sample/grid plus the FIB "chalk lines". The
+// Schematic cross-section of the sample/grid plus the FIB "chalk lines". The
 // sample, grid, and chalk lines rotate with the stage (canvas rotation
 // -alphaTiltAngle). Chalk lines are created along the FIB and stored by their
 // canvas-frame angle; coloring (perpendicular = mint, parallel = pink) comes
@@ -18,8 +18,8 @@ Item {
 
     property real alphaTiltAngle: 0
 
-    // Chalk lines stored in canvas-local coordinates (relative to unrotated sample)
-    // Each line: {startX, startY, endX, endY, canvasAngle}
+    // Chalk lines stored in canvas-local coordinates (relative to the
+    // unrotated sample). Each line: {startX, startY, endX, endY, canvasAngle}.
     property var chalkLines: []
 
     // Expose line count for button state binding.

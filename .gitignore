@@ -26,6 +26,6 @@ dist/
 .vscode/
 .idea/
 
-# ---- OS cruft ----
+# ---- Operating system files ----
 .DS_Store
 Thumbs.db

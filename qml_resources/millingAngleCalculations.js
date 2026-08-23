@@ -3,29 +3,27 @@
 // =============================================================================
 // MILLING ANGLE CALCULATIONS  (Arctis Angle Calculator)
 //
-// Pure geometry library for the Arctis milling-angle figures. This file is
-// the single source of truth for the Arctis side-view geometry. It is a
-// QML `.pragma library` (stateless, shared) and reads NO QML singletons:
-// anything environment-specific (the stage tilt limits) is passed in as an
-// argument so AppConfig stays the single source of truth for UI limits.
+// Pure geometry library for the Arctis milling-angle figures — the single
+// source of truth for the side-view geometry. It is a QML `.pragma library`
+// (stateless, shared) and reads NO QML singletons: anything
+// environment-specific (the stage tilt limits) is passed in as an argument,
+// so AppConfig remains the authority on UI limits.
 //
 // Instrument geometry (side view, screen angles measured CCW from
 // horizontal-right, matching diagramFunctions.js):
 //
-//   * SEM column is vertical, pointing up      ->  90 deg
-//   * FIB column is 52 deg LEFT of the SEM     -> 142 deg   (90 + 52)
-//   * GIS needle                               -> 123.5 deg
-//   * iFLM column is vertical, pointing down   -> 270 deg   (reference line
-//       only; the current detection set is SEM / FIB / GIS, so iFLM is
-//       provided as a constant for the drawing layer but is not part of
-//       chalkLineRelation / achievableTiltsForBeam.)
+//   * SEM column is vertical, pointing up    ->  90 deg
+//   * FIB column is 52 deg left of the SEM   -> 142 deg  (90 + 52)
+//   * GIS needle                             -> 123.5 deg
+//   * iFLM column is vertical, pointing down -> 270 deg  (drawn as a
+//       reference line only; the detection set is SEM / FIB / GIS, so iFLM
+//       is not part of chalkLineRelation / achievableTiltsForBeam.)
 //
 // Stage model:
-//   The Arctis Compustage tilts on a SINGLE axis (alpha). There is no stage
-//   rotation regime (unlike the Hydra AutoGrid calculator), so none of the
-//   functions here take a regime argument. The alpha tilt range
-//   (AppConfig.minAlphaTilt / maxAlphaTilt, currently -190 .. +10) is passed
-//   into the achievable-tilt functions as (tiltMinDeg, tiltMaxDeg).
+//   The Arctis Compustage tilts on a SINGLE axis (alpha), with no stage
+//   rotation, so none of the functions here take a rotation argument. The
+//   alpha tilt range (AppConfig.minAlphaTilt / maxAlphaTilt) is passed into
+//   the achievable-tilt functions as (tiltMinDeg, tiltMaxDeg).
 //
 // Milling angle relationship:
 //   millingAngle = FIB_MILLING_OFFSET_DEG + alphaTilt        (= 38 + alpha)
@@ -33,10 +31,8 @@
 //   AND alpha < BOG_ALPHA_THRESHOLD_DEG:
 //       millingAngle = BOG_BASE_DEG - (FIB_MILLING_OFFSET_DEG + alphaTilt)
 //                    = -180 - (38 + alpha)
-//   When BOG mode is on, milling -> alpha is also BOG-aware: a milling angle
-//   whose back-of-grid tilt lands in the BOG range inverts to that tilt (see
-//   alphaTiltForDisplay). Such a milling angle also has a front-of-grid
-//   solution; BOG mode resolves the ambiguity toward the back-of-grid tilt.
+//   When BOG mode is on, milling -> alpha is also BOG-aware (see
+//   alphaTiltForDisplay).
 //
 // Chalk lines (FIB cuts on the sample):
 //   A chalk line is always created along the FIB direction and is stored by
@@ -48,13 +44,6 @@
 //
 //   "Parallel" and "perpendicular" are properties of undirected lines, so
 //   every angle comparison is made modulo 180 deg (lineAngleDifferenceDeg).
-//
-// Equivalence:
-//   This library reproduces, over the real input domain, the behavior of the
-//   previous per-beam helpers (isLinePerpTo* / isLineParallelTo*) and the
-//   six achievable-angle properties that lived inline in SampleGraphics.qml.
-//   See tests/test_millingAngleCalculations.mjs (run with node) for the
-//   anchor-point checks and the equivalence sweep against the old logic.
 // =============================================================================
 
 // -----------------------------------------------------------------------------
@@ -64,7 +53,6 @@
 var SEM_SCREEN_ANGLE_DEG = 90.0
 var FIB_SCREEN_ANGLE_DEG = 142.0
 var GIS_SCREEN_ANGLE_DEG = 123.5
-var IFLM_SCREEN_ANGLE_DEG = 270.0   // reference line only (see header)
 
 // Milling-angle offset between alpha tilt and milling angle.
 var FIB_MILLING_OFFSET_DEG = 38.0
@@ -77,10 +65,10 @@ var BOG_BASE_DEG = -180.0
 // RELATION TOLERANCES / NAMES
 // -----------------------------------------------------------------------------
 
-// Single tolerance for both relations (the old code used 0.1 for each).
+// Tolerance for both relation checks.
 var RELATION_TOLERANCE_DEG = 0.1
 
-// De-duplication tolerance for achievable-tilt lists (old code used 0.01).
+// De-duplication tolerance for achievable-tilt lists.
 var ACHIEVABLE_DEDUP_TOLERANCE_DEG = 0.01
 
 var RELATION_PARALLEL = "parallel"
@@ -108,9 +96,7 @@ function calculateBogMillingAngle(alphaTiltDeg) {
 }
 
 // Milling angle to DISPLAY for a given alpha tilt, applying the BOG branch
-// only when BOG mode is enabled AND alpha is below the BOG threshold. This
-// encapsulates the threshold logic that previously appeared (twice) inline
-// in AngleControlsGB.qml.
+// only when BOG mode is enabled AND alpha is below the BOG threshold.
 function millingAngleForDisplay(alphaTiltDeg, useBogMode) {
     if (useBogMode && alphaTiltDeg < BOG_ALPHA_THRESHOLD_DEG)
         return calculateBogMillingAngle(alphaTiltDeg)
@@ -125,13 +111,13 @@ function calculateBogAlphaTilt(millingAngleDeg) {
     return BOG_BASE_DEG - FIB_MILLING_OFFSET_DEG - millingAngleDeg
 }
 
-// Alpha tilt to DISPLAY for a typed milling angle - the inverse companion of
+// Alpha tilt to DISPLAY for a typed milling angle — the inverse companion of
 // millingAngleForDisplay. In BOG mode, a milling angle whose back-of-grid tilt
 // lands in the BOG range (below the threshold and within the tilt limit)
 // inverts to that BOG tilt; everything else uses the plain inverse. This
 // mirrors the conditional structure of millingAngleForDisplay, so BOG tilts and
 // clearly front-of-grid milling angles both round-trip. NOTE: a milling angle
-// in the BOG range also has a front-of-grid solution - BOG mode resolves the
+// in the BOG range also has a front-of-grid solution — BOG mode resolves the
 // ambiguity toward the back-of-grid tilt.
 function alphaTiltForDisplay(millingAngleDeg, useBogMode, tiltMinDeg) {
     if (useBogMode) {
@@ -181,7 +167,7 @@ function lineAngleDifferenceDeg(angleADeg, angleBDeg) {
 // Relation of a chalk line (by its canvas angle) to a beam at the given
 // alpha tilt: RELATION_PERPENDICULAR, RELATION_PARALLEL, or RELATION_NONE.
 // Perpendicular and parallel are 90 deg apart, so a line can hold at most
-// one relation to a given beam; perpendicular is reported first for safety.
+// one relation to a given beam; perpendicular is checked first.
 function chalkLineRelation(canvasAngleDeg, alphaTiltDeg, beamName) {
     var g = chalkLineGlobalAngleDeg(canvasAngleDeg, alphaTiltDeg)
     var d = lineAngleDifferenceDeg(g, beamScreenAngleDeg(beamName))
@@ -219,9 +205,8 @@ function achievableTiltsForRelation(canvasAngleDeg, beamName, relation,
 
     var base = beamScreenAngleDeg(beamName) + offset - canvasAngleDeg
     var tilts = []
-    // Iterate n over a padded window and filter on the inclusive bounds, so
-    // the range check (and any floating-point boundary case) matches the old
-    // isValidAngle(): keep when tiltMin <= alpha <= tiltMax.
+    // Iterate n over a padded window and filter on the inclusive bounds:
+    // keep when tiltMin <= alpha <= tiltMax.
     var nLow = Math.floor((tiltMinDeg - base) / 180) - 1
     var nHigh = Math.ceil((tiltMaxDeg - base) / 180) + 1
     for (var n = nLow; n <= nHigh; n++) {
@@ -234,9 +219,7 @@ function achievableTiltsForRelation(canvasAngleDeg, beamName, relation,
 
 // All achievable alpha tilts for one beam and ONE relation over a set of
 // chalk lines (array of canvas angles), de-duplicated WITHIN the relation
-// and sorted ascending. Returns a plain array of alpha values. Reproduces
-// the old per-relation achievable<Beam><Relation>Angles properties (whose
-// de-duplication was within a single relation, not across both).
+// and sorted ascending. Returns a plain array of alpha values.
 function achievableTiltsForBeamRelation(canvasAnglesDeg, beamName, relation,
                                         tiltMinDeg, tiltMaxDeg) {
     var alphas = []
@@ -263,10 +246,9 @@ function achievableTiltsForBeamRelation(canvasAnglesDeg, beamName, relation,
 // Combined, de-duplicated, ascending list of every achievable
 // { alphaTilt, relation } for one beam over a set of chalk lines (array of
 // canvas angles), within the alpha tilt limits. This is the list a beam's
-// chip row is built from, and the alpha values match the old combined
-// achievable<Beam>Angles array (now each tagged with its relation).
-// Perpendicular is processed before parallel so that, on the (degenerate)
-// chance of a tie within the dedup tolerance, perpendicular wins.
+// chip row is built from. Perpendicular is processed before parallel so
+// that, in the (degenerate) case of a tie within the dedup tolerance,
+// perpendicular wins.
 function achievableTiltsForBeam(canvasAnglesDeg, beamName,
                                 tiltMinDeg, tiltMaxDeg) {
     var entries = []

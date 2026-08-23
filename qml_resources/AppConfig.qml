@@ -1,17 +1,20 @@
 pragma Singleton
 import QtQuick
 
+// Central configuration singleton: the application version, colors, tooltip
+// text, and figure geometry.
+
 QtObject {
 
-    // Application version (shown in the window title)
-    readonly property string appVersion: "1.2.2"
+    // Application version (shown in the window title).
+    readonly property string appVersion: "1.2.3"
 
     // Main window color palette
     readonly property color backgroundColor: "#1e2c36"
     readonly property color accentColor: "#2ea2ec"
     readonly property color textPrimary: "#ffffff"
 
-    // Tooltip
+    // Tooltip timing (ms)
     readonly property int toolTipDelay: 1500
     readonly property int toolTipTimeout: 10000
 
@@ -65,9 +68,9 @@ QtObject {
     readonly property real wheelTiltStepDeg: 1
 
     // ===================== Figure geometry =====================
-    // One multiplier resizes BOTH figures uniformly. Every dimension below is
-    // <base> * figureScale, so changing this single number grows the whole
-    // diagram - canvas, protractor, sample/grid, beam arc, and shuttle -
+    // One multiplier resizes BOTH figures uniformly. Each scaled dimension
+    // below is <base> * figureScale, so changing this single number grows the
+    // whole diagram — canvas, protractor, sample/grid, beam arc, and shuttle —
     // together, and the surrounding layout reflows. Line weights, fonts, and
     // the relation chips keep a fixed size (see "Figure styling" below).
     readonly property real figureScale: 1.0
@@ -78,15 +81,15 @@ QtObject {
 
     // Protractor / reference circle and its reference + tick line lengths.
     readonly property real referenceCircleRadius: 232.6655 * figureScale
-    readonly property real referenceLineLengthLong: 100 * figureScale   // SEM / FIB / iFLM lines
-    readonly property real referenceLineLengthShort: 50 * figureScale   // horizontals + radial ticks
-    readonly property real referenceLabelOffset: 18 * figureScale       // gauge label gap beyond its line
+    readonly property real referenceLineLengthLong: 100 * figureScale   // SEM / FIB / iFLM lines.
+    readonly property real referenceLineLengthShort: 50 * figureScale   // Horizontals + radial ticks.
+    readonly property real referenceLabelOffset: 18 * figureScale       // Gauge label gap beyond its line.
 
     // Sample (chalk-line) figure: sample slab + grid rectangle.
     readonly property real sampleRectangleHeight: 50 * figureScale
     readonly property real gridRectangleHeight: 6 * figureScale
-    readonly property real sampleRectangleWidthFactor: 1.9   // x referenceCircleRadius
-    readonly property real gridRectangleWidthFactor: 2.05    // x referenceCircleRadius
+    readonly property real sampleRectangleWidthFactor: 1.9   // × referenceCircleRadius.
+    readonly property real gridRectangleWidthFactor: 2.05    // × referenceCircleRadius.
 
     // Sample-figure beam labels (SEM / FIB / GIS) on one shared arc, with
     // numbered perpendicular/parallel chips (see SampleReferenceGraphics.qml).
@@ -94,7 +97,7 @@ QtObject {
     readonly property real sampleBeamLineLength: 60 * figureScale
     readonly property real sampleBeamLabelOffset: 18 * figureScale
 
-    // Stage shuttle SVG (drawn in StageGraphics).
+    // Stage shuttle SVG (drawn in StageGraphics.qml).
     readonly property real stageImageWidth: 465.331 * 0.8 * figureScale
     readonly property real stageImageHeight: 53.961 * 0.8 * figureScale
     readonly property real stageImageVerticalOffset: 10 * figureScale
@@ -109,14 +112,16 @@ QtObject {
     readonly property int labelBorderWidth: 1
     readonly property color labelBorderBrightHighlight: Qt.lighter(groupBoxBorder, 1.3)
     readonly property color referenceLines: "#ffffff"
-    readonly property color alphaTiltColor: "#00a200" //"#33ff33"
-    readonly property color waitingForUserInput: "#f6b436"
-    readonly property color catBugOvenMit: "#eb70a9"
+    readonly property color alphaTiltColor: "#00a200"
+    readonly property color waitingForUserInput: "#f6b436"      // Chalk lines with no beam relation.
+    // Milling-angle readout on the stage figure (same pink as
+    // parallelHighlightColor).
+    readonly property color millingAngleReadoutColor: "#eb70a9"
 
     // ===================== Beam relation chips =====================
-    readonly property color perpendicularHighlightColor: "#70EBB2" // mint - perpendicular
-    readonly property color parallelHighlightColor: "#eb70a9"      // pink - parallel
-    readonly property int chipFontSizeReduction: 6   // chip number font = diagramLabelFontSize - this
+    readonly property color perpendicularHighlightColor: "#70EBB2" // Mint: perpendicular.
+    readonly property color parallelHighlightColor: "#eb70a9"      // Pink: parallel.
+    readonly property int chipFontSizeReduction: 6   // Chip number font size = diagramLabelFontSize minus this.
     readonly property real chipHorizontalPadding: 8
     readonly property real chipVerticalPadding: 2
     readonly property real chipRadius: 3
@@ -125,7 +130,7 @@ QtObject {
     readonly property real chipMouseAreaMargin: 2
     readonly property real chipActiveFillOpacity: 0.18
     readonly property real chipRestBorderOpacity: 0.45
-    readonly property int chipMaxPerRow: 5            // chips wrap to a new row past this count
+    readonly property int chipMaxPerRow: 5            // Chips wrap to a new row once the count exceeds this.
 
 }
 

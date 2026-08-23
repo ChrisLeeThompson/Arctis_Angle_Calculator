@@ -3,9 +3,12 @@ import QtQuick
 import QtQuick.Controls
 import "."
 
+// Composes the static protractor (StageReferenceGraphics) with the rotating
+// stage layer (StageGraphics).
+
 Item {
 
-    // properties to control the diagram
+    // Properties that control the diagram.
     property real millingAngle: millingAngle
     property real alphaTiltAngle: alphaTiltAngle
 
@@ -17,9 +20,9 @@ Item {
     implicitHeight: AppConfig.stageDiagramHeight
 
     // ---- Scroll-wheel tilt adjustment ----
-    // Wheel over the figure steps the alpha tilt directly (AppConfig
-    // .wheelTiltStepDeg per notch, clamped to the stage limits) via
-    // alphaTiltAdjusted - the page applies it WITHOUT animation so the figure
+    // Wheel over the figure steps the alpha tilt directly by
+    // AppConfig.wheelTiltStepDeg per notch, clamped to the stage limits, via
+    // alphaTiltAdjusted — the page applies it WITHOUT animation so the figure
     // tracks the wheel snappily. angleDelta accumulates into standard 120-unit
     // notches, coalescing high-resolution trackpad event floods into clean
     // steps. This consumes plain wheel events over the figure, so the page
@@ -45,18 +48,18 @@ Item {
         }
     }
 
-    // Static reference lines
+    // Static reference lines.
     StageReferenceGraphics {
         id: stageReferenceGraphics
         anchors.fill: parent
         anchors.centerIn: parent
         millingAngle: root.millingAngle
-        onAlphaTiltChanged: function(newAlphatilt) {
-            root.alphaTiltClickedFromDiagram(newAlphatilt)
+        onAlphaTiltChanged: function(newAlphaTilt) {
+            root.alphaTiltClickedFromDiagram(newAlphaTilt)
         }
     }
 
-    // Dynamic stage graphics
+    // Dynamic stage graphics.
     StageGraphics {
         id: stageGraphics
         anchors.fill: parent

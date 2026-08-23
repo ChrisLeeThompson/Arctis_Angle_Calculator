@@ -3,13 +3,15 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "."
 
+// Group box for the stage (protractor) figure.
+
 GroupBox {
 
     property real millingAngle: millingAngle
     property real alphaTiltAngle: alphaTiltAngle
 
     // 1.0 = full size; < 1.0 shrinks the figure uniformly to fit a small display.
-    // Only the figure is scaled - the GroupBox border and padding stay full size.
+    // Only the figure is scaled — the GroupBox border and padding stay full size.
     property real figureFitScale: 1.0
 
     signal alphaTiltClickedSignal(real newAlphaTilt)
@@ -30,9 +32,10 @@ GroupBox {
     focusPolicy: Qt.StrongFocus
 
     // The figure is drawn at its natural design size and scaled uniformly by
-    // figureFitScale. The slot's implicit size shrinks by the same factor, so the
-    // GroupBox - and the layout around it - reclaim the freed space. The scale is
-    // applied only to the figure, so the border and padding keep their size.
+    // figureFitScale. The slot's implicit size shrinks by the same factor, so
+    // the GroupBox — and the layout around it — reclaims the freed space. The
+    // scale applies only to the figure, so the border and padding keep their
+    // size.
     contentItem: Item {
         id: figureSlot
         implicitWidth: AppConfig.stageDiagramWidth * root.figureFitScale
@@ -43,8 +46,8 @@ GroupBox {
             width: AppConfig.stageDiagramWidth
             height: AppConfig.stageDiagramHeight
 
-            // Scale about the top-centre: the figure stays centred horizontally
-            // and fills the shrunk slot vertically (top-aligned, height 720*scale).
+            // Scale about the top-center: the figure stays centered
+            // horizontally and fills the shrunk slot vertically (top-aligned).
             transformOrigin: Item.Top
             scale: root.figureFitScale
             x: (figureSlot.width - width) / 2

@@ -1,21 +1,24 @@
 import QtQuick
 import QtQuick.Controls
 
+// SpinBox that works in real (double) values by scaling them to integers
+// internally.
+
 SpinBox {
 
     id: root
 
-    // Public properties for double precision
+    // Public real-valued properties.
     property real realValue: 0.0
     property real realFrom: 0.0
     property real realTo: 100.0
     property real realStepSize: 1.0
     property int decimals: 2
 
-    // Internal scale factor based on decimals
+    // Internal scale factor based on decimals.
     readonly property int scaleFactor: Math.pow(10, decimals)
 
-    // Configure SpinBox based on real values
+    // Map the real-valued properties onto the integer SpinBox.
     from: Math.round(realFrom * scaleFactor)
     to: Math.round(realTo * scaleFactor)
     stepSize: Math.round(realStepSize * scaleFactor)
@@ -31,11 +34,11 @@ SpinBox {
         notation: DoubleValidator.StandardNotation
     }
 
-    // Hide the up/down buttons
+    // Hide the up/down buttons.
     up.indicator: Item {}
     down.indicator: Item {}
 
-    // Custom background styling
+    // Custom background styling.
     background: Rectangle {
         implicitWidth: 100
         implicitHeight: 32
@@ -50,12 +53,12 @@ SpinBox {
             if (root.hovered) return Qt.lighter(AppConfig.groupBoxBorder, 1.3)
             return AppConfig.spinBoxBorder
         }
-        border.width: root.activeFocus ? AppConfig.spinBoxBorderWidth : 2
+        border.width: AppConfig.spinBoxBorderWidth
         radius: AppConfig.spinBoxRadius
 
     }
 
-    // Custom text input styling
+    // Custom text input styling.
     contentItem: TextInput {
         z: 2
         text: root.textFromValue(root.value, root.locale)
@@ -70,7 +73,7 @@ SpinBox {
         inputMethodHints: Qt.ImhFormattedNumbersOnly
     }
 
-    // Sync internal value changes back to realValue
+    // Sync internal value changes back to realValue.
     onValueChanged: {
         var newRealValue = value / scaleFactor
         if (Math.abs(newRealValue - realValue) > Number.EPSILON) {
@@ -78,7 +81,7 @@ SpinBox {
         }
     }
 
-    // Sync external realValue changes to internal value
+    // Sync external realValue changes to the internal value.
     onRealValueChanged: {
         var newValue = Math.round(realValue * scaleFactor)
         if (newValue !== value) {
@@ -86,12 +89,12 @@ SpinBox {
         }
     }
 
-    // Convert displayed text to internal integer value
+    // Convert displayed text to the internal integer value.
     valueFromText: function(text, locale) {
         return Math.round(Number.fromLocaleString(locale, text) * scaleFactor)
     }
 
-    // Convert internal integer value to displayed text
+    // Convert the internal integer value to displayed text.
     textFromValue: function(value, locale) {
         return Number(value / scaleFactor).toLocaleString(locale, 'f', decimals)
     }

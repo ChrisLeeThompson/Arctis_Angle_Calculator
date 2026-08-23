@@ -18,9 +18,9 @@ Item {
     signal alphaTiltChangeRequested(real newAlphaTilt)
 
     // ---- Scroll-wheel tilt adjustment ----
-    // Wheel over the figure steps the alpha tilt directly (AppConfig
-    // .wheelTiltStepDeg per notch, clamped to the stage limits) via
-    // alphaTiltAdjusted - the page applies it WITHOUT animation so the figure
+    // Wheel over the figure steps the alpha tilt directly by
+    // AppConfig.wheelTiltStepDeg per notch, clamped to the stage limits, via
+    // alphaTiltAdjusted — the page applies it WITHOUT animation so the figure
     // tracks the wheel snappily. angleDelta accumulates into standard 120-unit
     // notches, coalescing high-resolution trackpad event floods into clean
     // steps. This consumes plain wheel events over the figure, so the page

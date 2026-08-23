@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import "."
 
+// RoundButton restyled to the app's dark palette.
+
 RoundButton {
     id: control
 
@@ -18,15 +20,8 @@ RoundButton {
                 return Qt.lighter(AppConfig.groupBoxBorder, 1.3)
             return AppConfig.groupBoxBorder
         }
-        border.color: {
-            if (!control.enabled)
-                return AppConfig.buttonBorderDisabled
-            // if (control.hovered)
-                // return AppConfig.accentColor
-            if (control.activeFocus)
-                return AppConfig.groupBoxBorder
-            return AppConfig.groupBoxBorder
-        }
+        border.color: control.enabled ? AppConfig.groupBoxBorder
+                                      : AppConfig.buttonBorderDisabled
         border.width: 1
         radius: AppConfig.buttonRadius
         opacity: control.enabled ? 1.0 : 0.8

@@ -4,6 +4,9 @@ import QtQuick.Layouts
 import "millingAngleCalculations.js" as Calc
 import "."
 
+// Control panel: the milling-angle and alpha-tilt spin boxes, the microscope
+// connection switch, and the BOG milling angle switch.
+
 GroupBox {
 
     property alias alphaTiltRealValue: alphaTiltSB.realValue
@@ -11,7 +14,7 @@ GroupBox {
     property bool useAlternativeMillingAngleMode: false
     property bool connectedToMicroscope: false
 
-    // Flag to prevent recursive updates
+    // Flag to prevent recursive updates.
     property bool updatingValues: false
 
     function animateAlphaTiltTo(targetValue) {
@@ -233,7 +236,7 @@ GroupBox {
                 elide: Text.ElideRight
             }
 
-            // Row 4: alternative (BOG) Milling Angle
+            // Row 4: BOG Milling Angle
             Label {
                 property string _toolTipText: AppConfig.bogMillingAngleToolTip
 
@@ -262,7 +265,7 @@ GroupBox {
                 onCheckedChanged: {
                     useAlternativeMillingAngleMode = checked
 
-                    // Recalculate milling angle with new mode
+                    // Recalculate the milling angle with the new mode.
                     if (!root.updatingValues) {
                         root.updatingValues = true
 

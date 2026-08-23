@@ -2,6 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import "."
 
+// Switch restyled to the app's dark palette. Color changes are instant
+// (zero-duration behaviors); only the handle slides.
+
 Switch {
     id: control
 

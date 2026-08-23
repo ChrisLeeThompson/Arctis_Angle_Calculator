@@ -1,9 +1,10 @@
 [project]
-name = "Arctis Angle Calculator 1.2.py"
+name = "Arctis Angle Calculator"
 
 [tool.pyside6-project]
 files = [
     "./qml_resources/main.qml",
+    "__init__.py",
     "arctis_angle_calculator.py",
     "qml_resources/AngleControlsGB.qml",
     "qml_resources/AppConfig.qml",
@@ -19,6 +20,7 @@ files = [
     "qml_resources/StageReferenceGraphics.qml",
     "qml_resources/StyledSwitch.qml",
     "qml_resources/diagramFunctions.js",
+    "qml_resources/icons/catbug_waiting_color.png",
     "qml_resources/millingAngleCalculations.js",
     "qml_resources/qmldir",
     "qml_resources/qtquickcontrols2.conf",

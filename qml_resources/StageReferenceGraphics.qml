@@ -6,17 +6,19 @@ import "diagramFunctions.js" as Draw
 
 // Static protractor for the stage (alpha-tilt) figure.
 //
-// Everything on the gauge is data-driven by the two lists below, so adding or
-// removing a reference point is a one-line edit - no copy-pasted Text/MouseArea
-// blocks. On this gauge the alpha tilt IS the screen angle (0 deg = right,
-// CCW), so a tick value is both where it's drawn and the tilt it applies when
-// clicked.
+// The gauge marks are data-driven by the two lists below, so adding or
+// removing a reference point is a one-line edit — no copy-pasted
+// Text/MouseArea blocks. On this gauge the alpha tilt IS the screen angle
+// (0 deg = right, CCW), so a tick value is both where it is drawn and the
+// tilt it applies when clicked. A live milling-angle readout (not part of the
+// lists) sits beyond the arc.
 //
-//   * beamLabels - the beam-direction labels (SEM / FIB / GIS / iFLM). All sit
-//     on ONE shared outer arc (radius + long reference line), matching the
-//     sample figure. Each carries the tilt to apply when clicked.
-//   * tickValues - the clickable gauge ticks. Each is drawn as a short radial
-//     mark on the arc, labeled "<value>deg", and jumps the stage there.
+//   * beamLabels — the beam-direction labels (SEM / FIB / GIS / iFLM). All
+//     sit on ONE shared outer arc (radius + long reference line), matching
+//     the sample figure. Each carries the tilt to apply when clicked.
+//   * tickValues — the clickable gauge ticks. Each is drawn as a short
+//     radial mark on the arc, labeled "<value>°", and applies that tilt when
+//     clicked.
 
 Item {
 
@@ -68,7 +70,7 @@ Item {
 
 			// Beam reference lines, one per beam label. FIB is special: it
 			// extends inward to the stage graphic at the center (start radius
-			// 0), matching the previous UI; the rest start at the circle edge.
+			// 0); the rest start at the circle edge.
 			for (var b = 0; b < root.beamLabels.length; b++) {
 				var beamAngle = root.beamLabels[b].screenAngle
 				if (root.beamLabels[b].text === "FIB") {
@@ -175,7 +177,7 @@ Item {
 	Text {
 		id: millingAngleLabel
 		text: root.millingAngle.toFixed(1) + "\u00B0"
-		color: AppConfig.catBugOvenMit
+		color: AppConfig.millingAngleReadoutColor
 		font.pixelSize: AppConfig.diagramLabelFontSize
 
 		readonly property var _pos: Draw.getRadialLabelPosition(

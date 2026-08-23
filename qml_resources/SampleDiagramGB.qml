@@ -3,19 +3,22 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "."
 
+// Group box for the sample (chalk-line) figure, with the Add Chalk Line and
+// Remove Last buttons.
+
 GroupBox {
     id: root
 
     property real alphaTiltAngle: AppConfig.initialAlphaTiltAngle
 
     // 1.0 = full size; < 1.0 shrinks the figure uniformly to fit a small display.
-    // Only the figure is scaled - the GroupBox chrome and the buttons stay full size.
+    // Only the figure is scaled — the GroupBox chrome and the buttons stay full size.
     property real figureFitScale: 1.0
 
-    // Signal emitted when user clicks a label to change alpha tilt
+    // Emitted when the user picks a position via a beam label or chip.
     signal alphaTiltChangeRequested(real newAlphaTilt)
 
-    // Signal emitted when the user adjusts alpha tilt with the scroll wheel
+    // Emitted when the user adjusts the alpha tilt with the scroll wheel
     // (applied without animation by the page).
     signal alphaTiltAdjusted(real newAlphaTilt)
 
@@ -31,10 +34,10 @@ GroupBox {
     focusPolicy: Qt.StrongFocus
 
     // The figure is drawn at its natural design size and scaled uniformly by
-    // figureFitScale; the slot's implicit size shrinks by the same factor so the
-    // GroupBox reclaims the freed space. The Add Chalk Line / Remove Last buttons
-    // are NOT scaled - they stay full size, anchored to the bottom of the
-    // (shrunk) slot.
+    // figureFitScale. The slot's implicit size shrinks by the same factor, so
+    // the GroupBox reclaims the freed space. The Add Chalk Line / Remove Last
+    // buttons are NOT scaled — they stay full size, anchored to the bottom of
+    // the (shrunk) slot.
     contentItem: Item {
         id: figureSlot
         implicitWidth: AppConfig.stageDiagramWidth * root.figureFitScale
@@ -45,8 +48,8 @@ GroupBox {
             width: AppConfig.stageDiagramWidth
             height: AppConfig.stageDiagramHeight
 
-            // Scale about the top-centre: stays centred horizontally and fills
-            // the shrunk slot vertically (top-aligned, height 720*scale).
+            // Scale about the top-center: the figure stays centered
+            // horizontally and fills the shrunk slot vertically (top-aligned).
             transformOrigin: Item.Top
             scale: root.figureFitScale
             x: (figureSlot.width - width) / 2
