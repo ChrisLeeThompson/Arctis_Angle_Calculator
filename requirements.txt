@@ -15,7 +15,7 @@
 # (QGuiApplication, QIcon), and QtQml (QQmlApplicationEngine). The QML uses
 # unversioned imports (QtQuick, QtQuick.Controls, QtQuick.Layouts) and a
 # qtquickcontrols2.conf style config, both of which require Qt 6 / PySide6.
-PySide6>=6.5,<7
+PySide6>=6.7.1,<7
 
 # --- Microscope control SDK (optional) ---------------------------------------
 # autoscript_sdb_microscope_client is Thermo Scientific's proprietary AutoScript
@@ -25,7 +25,7 @@ PySide6>=6.5,<7
 #
 # It is not available on PyPI, so it is not listed below. Install it from the
 # AutoScript media that ships with the microscope. This project targets
-# AutoScript version 4.13 or newer.
+# AutoScript version 4.14 or newer.
 
 # ----------------------------------------------------------------------------
 # Standard-library modules used by the app (os, sys, logging, math, pathlib)
