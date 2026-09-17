@@ -1,8 +1,13 @@
 # Arctis Angle Calculator
 
-<!-- Full documentation: https://<site>/scripts/arctis_angle_calculator/ (enable this link when the site is live) -->
+> [!NOTE]
+> **Full documentation:** https://chrisleethompson.github.io/scripts/arctis_angle_calculator/
 
 A PySide6/QML desktop utility that calculates and visualizes milling angles and stage tilt angles for the Thermo Scientific Arctis cryo plasma FIB-SEM. It runs standalone for offline visualization, or connects to the microscope through the Thermo Scientific AutoScript SDK to read and set the stage alpha tilt.
+
+## Documentation
+
+Full documentation: https://chrisleethompson.github.io/scripts/arctis_angle_calculator/
 
 ## Features
 
